@@ -9,8 +9,58 @@
     tools:context="com.sucks.sensor.MainActivity">
 
     <TextView
-        android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="X: "
+        android:id="@+id/xLbl"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Y: "
+        android:id="@+id/yLbl"
+        android:layout_marginTop="60dp"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Z: "
+        android:id="@+id/zLbl"
+        android:layout_below="@+id/yLbl"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=""
+        android:id="@+id/xAccel"
+        android:layout_alignTop="@+id/xLbl"
+        android:layout_toRightOf="@+id/xLbl"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=""
+        android:id="@+id/yAccel"
+        android:layout_below="@+id/xAccel"
+        android:layout_toRightOf="@+id/xLbl"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=""
+        android:id="@+id/zAccel"
+        android:layout_below="@+id/yAccel"
+        android:layout_toRightOf="@+id/zLbl"/>
 
 </RelativeLayout>
