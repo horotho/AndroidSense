@@ -1,6 +1,7 @@
 package com.sucks.sensor;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements SensorEventListener
@@ -16,6 +18,8 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
     public SensorManager sensorManager;
     public TextView xAccel, yAccel, zAccel;
+    public ImageView indicator;
+    public float xHigh, xLow, yHigh, yLow, zHigh, zLow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +33,8 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         xAccel = (TextView) this.findViewById(R.id.xAccel);
         yAccel = (TextView) this.findViewById(R.id.yAccel);
         zAccel = (TextView) this.findViewById(R.id.zAccel);
+
+        indicator = (ImageView) this.findViewById(R.id.indicator);
     }
 
 
@@ -58,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        final float aThreshold = 2;
+        final float aThreshold = 3;
 
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION)
         {
@@ -67,31 +73,46 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             float y = Math.abs(event.values[1]);
             float z = Math.abs(event.values[2]);
 
-            xAccel.setText("X Acceleration: " + x);
-            yAccel.setText("Y Acceleration: " + y);
-            zAccel.setText("Z Acceleration: " + z);
+            float xActual = event.values[0];
+            float yActual = event.values[1];
+            float zActual = event.values[2];
+
+            if (xActual > xHigh) xHigh = xActual;
+            if (xActual < xLow) xLow = xActual;
+
+            if (yActual > yHigh) yHigh = yActual;
+            if (yActual < yLow) yLow = yActual;
+
+            if (zActual > zHigh) zHigh = zActual;
+            if (zActual < zLow) zLow = zActual;
+
+            xAccel.setText("X: " + event.values[0] + ", " + xHigh + ", " + xLow);
+            yAccel.setText("Y: " + event.values[1] + ", " + yHigh + ", " + yLow);
+            zAccel.setText("Z: " + event.values[2] + ", " + zHigh + ", " + zLow);
 
             if (x < aThreshold && y < aThreshold && z < aThreshold)
             {
-
-                return;
-
-            }
-
-            if (x > y && x > z)
+                yAccel.setTextColor(Color.BLACK);
+                zAccel.setTextColor(Color.BLACK);
+                xAccel.setTextColor(Color.BLACK);
+                indicator.setImageResource(R.drawable.ic_launcher);
+            } else if (x > y && x > z)
             {
+                if (event.values[0] < 0) indicator.setImageResource(R.drawable.right_arrow);
+                else indicator.setImageResource(R.drawable.left_arrow);
 
-
+                yAccel.setTextColor(Color.BLACK);
+                zAccel.setTextColor(Color.BLACK);
+                xAccel.setTextColor(Color.RED);
             }
             else if (y > x && y > z)
             {
+                if (event.values[1] < 0) indicator.setImageResource(R.drawable.up_arrow);
+                else indicator.setImageResource(R.drawable.down_arrow);
 
-
-            }
-            else
-            {
-
-
+                xAccel.setTextColor(Color.BLACK);
+                zAccel.setTextColor(Color.BLACK);
+                yAccel.setTextColor(Color.RED);
             }
 
         }
