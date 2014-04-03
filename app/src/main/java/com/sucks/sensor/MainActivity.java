@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements SensorEventListener
 {
 
     public SensorManager sensorManager;
+    public TextView xAccel, yAccel, zAccel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,6 +25,10 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_NORMAL);
+
+        xAccel = (TextView) this.findViewById(R.id.xAccel);
+        yAccel = (TextView) this.findViewById(R.id.yAccel);
+        zAccel = (TextView) this.findViewById(R.id.zAccel);
     }
 
 
@@ -58,10 +64,12 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         {
 
             float x = Math.abs(event.values[0]);
-
             float y = Math.abs(event.values[1]);
-
             float z = Math.abs(event.values[2]);
+
+            xAccel.setText("X Acceleration: " + x);
+            yAccel.setText("Y Acceleration: " + y);
+            zAccel.setText("Z Acceleration: " + z);
 
             if (x < aThreshold && y < aThreshold && z < aThreshold)
             {
